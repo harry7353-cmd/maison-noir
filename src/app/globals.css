@@ -1,0 +1,415 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   MAISON NOIR — Global Design System
+   A luxury fashion e-commerce visual identity
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Brand Color Tokens ─── */
+:root {
+  /* Core palette */
+  --noir:           #121212;
+  --noir-deep:      #0A0A0A;
+  --noir-light:     #1A1A1A;
+  --noir-muted:     #2A2A2A;
+  
+  --gold:           #B89A5A;
+  --gold-light:     #D4B978;
+  --gold-dark:      #9A7E42;
+  --gold-muted:     #C8AD72;
+  
+  --ivory:          #F5F0E6;
+  --ivory-light:    #FAF7F0;
+  --ivory-dark:     #E8E0D0;
+  
+  --burgundy:       #4A1424;
+  --burgundy-light: #6B2038;
+  --burgundy-dark:  #350E1A;
+  
+  --white:          #FFFFFF;
+  --white-off:      #FAFAFA;
+  
+  /* Semantic tokens */
+  --background:     var(--white);
+  --foreground:     var(--noir);
+  --muted:          #737373;
+  --muted-light:    #A3A3A3;
+  --border:         #E5E5E5;
+  --border-gold:    rgba(184, 154, 90, 0.3);
+  
+  /* Functional */
+  --success:        #2D6A4F;
+  --error:          #C1292E;
+  --warning:        #E09F3E;
+  --info:           #457B9D;
+  
+  /* Shadows */
+  --shadow-sm:      0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md:      0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg:      0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl:      0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --shadow-gold:    0 4px 14px rgba(184, 154, 90, 0.15);
+  
+  /* Transitions */
+  --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base:   300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   500ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-luxury: 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Tailwind Theme Integration ─── */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  /* Brand colors */
+  --color-noir: var(--noir);
+  --color-noir-deep: var(--noir-deep);
+  --color-noir-light: var(--noir-light);
+  --color-noir-muted: var(--noir-muted);
+  
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  --color-gold-muted: var(--gold-muted);
+  
+  --color-ivory: var(--ivory);
+  --color-ivory-light: var(--ivory-light);
+  --color-ivory-dark: var(--ivory-dark);
+  
+  --color-burgundy: var(--burgundy);
+  --color-burgundy-light: var(--burgundy-light);
+  --color-burgundy-dark: var(--burgundy-dark);
+  
+  --color-white-off: var(--white-off);
+  --color-muted: var(--muted);
+  --color-muted-light: var(--muted-light);
+  --color-border: var(--border);
+  
+  --color-success: var(--success);
+  --color-error: var(--error);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  
+  /* Fonts */
+  --font-serif: var(--font-playfair), "Playfair Display", "Georgia", "Times New Roman", serif;
+  --font-sans: var(--font-inter), "Inter", "Helvetica Neue", "Arial", sans-serif;
+  --font-mono: var(--font-geist-mono), "JetBrains Mono", monospace;
+  
+  /* Spacing scale */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-30: 7.5rem;
+  --spacing-34: 8.5rem;
+  --spacing-38: 9.5rem;
+  
+  /* Border radius */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
+}
+
+/* ── Base Resets & Typography ─── */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── Selection highlight ─── */
+::selection {
+  background-color: var(--gold);
+  color: var(--white);
+}
+
+::-moz-selection {
+  background-color: var(--gold);
+  color: var(--white);
+}
+
+/* ── Scrollbar styling ─── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ivory-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* ── Typography utilities ─── */
+.heading-display {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.heading-editorial {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.heading-section {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.text-label {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.text-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+.text-price {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ── Gold accent line ─── */
+.gold-line {
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.gold-line-left {
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+/* ── Luxury button styles ─── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2.5rem;
+  background: var(--noir);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--noir);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(184, 154, 90, 0.1), transparent);
+  transition: left var(--transition-slow);
+}
+
+.btn-primary:hover {
+  background: var(--noir-light);
+  border-color: var(--gold);
+  box-shadow: var(--shadow-gold);
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2.5rem;
+  background: transparent;
+  color: var(--noir);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--noir);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-secondary:hover {
+  background: var(--noir);
+  color: var(--white);
+}
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2.5rem;
+  background: var(--gold);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--gold);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-gold:hover {
+  background: var(--gold-dark);
+  border-color: var(--gold-dark);
+  box-shadow: var(--shadow-gold);
+}
+
+/* ── Product card hover effect ─── */
+.product-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.product-image-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.product-image-wrapper img {
+  transition: transform var(--transition-luxury);
+}
+
+.product-card:hover .product-image-wrapper img {
+  transform: scale(1.05);
+}
+
+/* ── Luxury divider ─── */
+.luxury-divider {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.luxury-divider::before,
+.luxury-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* ── Page transition fade ─── */
+.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+/* ── Container utilities ─── */
+.container-luxury {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-luxury {
+    padding: 0 3rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-luxury {
+    padding: 0 4rem;
+  }
+}
+
+/* ── Announcement bar animation ─── */
+@keyframes slide-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-slide-left {
+  animation: slide-left 30s linear infinite;
+}
+
+/* ── Shimmer loading effect ─── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--ivory) 25%, var(--ivory-light) 50%, var(--ivory) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 2px;
+}
+
+/* ── Focus styles for accessibility ─── */
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ── Image placeholder ─── */
+.image-placeholder {
+  background: linear-gradient(135deg, var(--ivory) 0%, var(--ivory-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

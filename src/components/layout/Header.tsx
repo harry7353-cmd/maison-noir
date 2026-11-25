@@ -12,9 +12,16 @@ import {
   CloseIcon,
   ChevronDownIcon,
 } from "@/components/ui/Icons";
-import { NAV_LINKS } from "@/lib/constants";
+import { NAV_LINKS, NavItem, NavChildItem } from "@/lib/constants";
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
+import { LiveSearchModal } from "@/components/layout/LiveSearchModal";
 
 export function Header() {
+  const { user } = useAuth();
+  const { summary, openCart } = useCart();
+  const { totalWishlist } = useWishlist();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -83,37 +90,53 @@ export function Header() {
           {/* ── Right: Account, Wishlist, Cart ─── */}
           <div className="flex items-center justify-end gap-3 lg:gap-4 w-1/4">
             <Link
-              href="/account"
-              className="hidden sm:block p-1 hover:text-gold transition-colors"
-              aria-label="Account"
+              href={user ? "/account" : "/login"}
+              className="hidden sm:flex items-center gap-1.5 p-1 hover:text-gold transition-colors"
+              aria-label={user ? `Account (${user.name || "Client"})` : "Sign In"}
             >
-              <UserIcon size={20} />
+              <div className="relative">
+                <UserIcon size={20} />
+                {user && (
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-gold rounded-full" />
+                )}
+              </div>
+              {user && (
+                <span className="text-[11px] font-medium tracking-wider text-noir max-w-[80px] truncate">
+                  {user.name?.split(" ")[0] || "Client"}
+                </span>
+              )}
             </Link>
             <Link
               href="/wishlist"
-              className="hidden sm:block p-1 hover:text-gold transition-colors"
+              className="relative hidden sm:block p-1 hover:text-gold transition-colors"
               aria-label="Wishlist"
             >
               <HeartIcon size={20} />
+              {totalWishlist > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-burgundy text-white text-[9px] font-semibold rounded-full flex items-center justify-center animate-fade-in">
+                  {totalWishlist}
+                </span>
+              )}
             </Link>
-            <Link
-              href="/cart"
-              className="relative p-1 hover:text-gold transition-colors"
+            <button
+              onClick={openCart}
+              className="relative p-1 hover:text-gold transition-colors focus:outline-none"
               aria-label="Shopping bag"
             >
               <ShoppingBagIcon size={20} />
-              {/* Cart count badge - will be dynamic later */}
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-white text-[9px] font-semibold rounded-full flex items-center justify-center">
-                0
-              </span>
-            </Link>
+              {summary.totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-gold text-white text-[9px] font-semibold rounded-full flex items-center justify-center animate-fade-in">
+                  {summary.totalItems}
+                </span>
+              )}
+            </button>
           </div>
         </div>
 
         {/* ── Desktop Navigation ─── */}
         <nav className="hidden lg:block border-t border-border/50">
           <ul className="flex items-center justify-center gap-8 py-3">
-            {NAV_LINKS.main.map((item) => (
+            {NAV_LINKS.main.map((item: NavItem) => (
               <li
                 key={item.label}
                 className="relative group"
@@ -151,7 +174,7 @@ export function Header() {
                           View All {item.label}
                         </Link>
                       </div>
-                      {item.children.map((child) => (
+                      {item.children.map((child: NavChildItem) => (
                         <Link
                           key={child.label}
                           href={child.href}
@@ -169,28 +192,11 @@ export function Header() {
         </nav>
       </div>
 
-      {/* ── Search Overlay ─── */}
-      {isSearchOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white border-b border-border shadow-lg z-50">
-          <div className="container-luxury py-6">
-            <div className="flex items-center gap-4 max-w-2xl mx-auto">
-              <SearchIcon size={20} className="text-muted flex-shrink-0" />
-              <input
-                type="text"
-                placeholder="Search for clothing, collections, styles..."
-                className="w-full text-lg font-sans bg-transparent border-none outline-none placeholder:text-muted-light"
-                autoFocus
-              />
-              <button
-                onClick={() => setIsSearchOpen(false)}
-                className="p-1 hover:text-gold transition-colors flex-shrink-0"
-              >
-                <CloseIcon size={20} />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* ── Live Search Overlay Modal ─── */}
+      <LiveSearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
 
       {/* ── Mobile Menu Overlay ─── */}
       {isMobileMenuOpen && (
@@ -217,7 +223,7 @@ export function Header() {
 
             {/* Menu links */}
             <nav className="py-4">
-              {NAV_LINKS.main.map((item) => (
+              {NAV_LINKS.main.map((item: NavItem) => (
                 <div key={item.label} className="border-b border-border/30">
                   {item.children ? (
                     <details className="group">
@@ -244,7 +250,7 @@ export function Header() {
                         >
                           View All
                         </Link>
-                        {item.children.map((child) => (
+                        {item.children.map((child: NavChildItem) => (
                           <Link
                             key={child.label}
                             href={child.href}
@@ -274,12 +280,12 @@ export function Header() {
             {/* Mobile menu footer */}
             <div className="px-6 py-6 border-t border-border space-y-4">
               <Link
-                href="/account"
+                href={user ? "/account" : "/login"}
                 className="flex items-center gap-3 text-sm text-noir/70 hover:text-gold transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <UserIcon size={18} />
-                My Account
+                {user ? `Account (${user.name?.split(" ")[0] || "Client"})` : "Sign In / Join"}
               </Link>
               <Link
                 href="/wishlist"

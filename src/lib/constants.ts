@@ -2,6 +2,17 @@
 // MAISON NOIR — Brand Constants & Configuration
 // ═══════════════════════════════════════════════════════════
 
+export interface NavChildItem {
+  readonly label: string;
+  readonly href: string;
+}
+
+export interface NavItem {
+  readonly label: string;
+  readonly href: string;
+  readonly children?: readonly NavChildItem[];
+}
+
 export const BRAND = {
   name: "MAISON NOIR",
   tagline: "The Art of Darkness",
@@ -33,62 +44,64 @@ export const BRAND_STORY = {
 } as const;
 
 // ── Navigation Structure ───
+export const MAIN_NAV_ITEMS: readonly NavItem[] = [
+  {
+    label: "New Arrivals",
+    href: "/collections/new-arrivals",
+  },
+  {
+    label: "Men",
+    href: "/collections/men",
+    children: [
+      { label: "T-Shirts & Polos", href: "/collections/men/t-shirts-polos" },
+      { label: "Shirts", href: "/collections/men/shirts" },
+      { label: "Jeans", href: "/collections/men/jeans" },
+      { label: "Trousers & Cargos", href: "/collections/men/trousers" },
+      { label: "Hoodies & Sweatshirts", href: "/collections/men/hoodies" },
+      { label: "Jackets & Coats", href: "/collections/men/jackets" },
+      { label: "Suits & Blazers", href: "/collections/men/suits" },
+      { label: "Shorts", href: "/collections/men/shorts" },
+      { label: "Activewear", href: "/collections/men/activewear" },
+    ],
+  },
+  {
+    label: "Women",
+    href: "/collections/women",
+    children: [
+      { label: "Tops & T-Shirts", href: "/collections/women/tops" },
+      { label: "Shirts & Blouses", href: "/collections/women/shirts" },
+      { label: "Jeans & Trousers", href: "/collections/women/jeans" },
+      { label: "Dresses", href: "/collections/women/dresses" },
+      { label: "Skirts", href: "/collections/women/skirts" },
+      { label: "Hoodies & Sweatshirts", href: "/collections/women/hoodies" },
+      { label: "Jackets & Coats", href: "/collections/women/jackets" },
+      { label: "Activewear", href: "/collections/women/activewear" },
+      { label: "Occasion Wear", href: "/collections/women/occasion-wear" },
+    ],
+  },
+  {
+    label: "Collections",
+    href: "/collections",
+    children: [
+      { label: "Streetwear", href: "/collections/streetwear" },
+      { label: "Essentials", href: "/collections/essentials" },
+      { label: "After Dark", href: "/collections/after-dark" },
+      { label: "Best Sellers", href: "/collections/best-sellers" },
+      { label: "The Archive", href: "/collections/archive" },
+    ],
+  },
+  {
+    label: "Accessories",
+    href: "/collections/accessories",
+  },
+  {
+    label: "Sale",
+    href: "/collections/sale",
+  },
+];
+
 export const NAV_LINKS = {
-  main: [
-    {
-      label: "New Arrivals",
-      href: "/collections/new-arrivals",
-    },
-    {
-      label: "Men",
-      href: "/collections/men",
-      children: [
-        { label: "T-Shirts & Polos", href: "/collections/men/t-shirts-polos" },
-        { label: "Shirts", href: "/collections/men/shirts" },
-        { label: "Jeans", href: "/collections/men/jeans" },
-        { label: "Trousers & Cargos", href: "/collections/men/trousers" },
-        { label: "Hoodies & Sweatshirts", href: "/collections/men/hoodies" },
-        { label: "Jackets & Coats", href: "/collections/men/jackets" },
-        { label: "Suits & Blazers", href: "/collections/men/suits" },
-        { label: "Shorts", href: "/collections/men/shorts" },
-        { label: "Activewear", href: "/collections/men/activewear" },
-      ],
-    },
-    {
-      label: "Women",
-      href: "/collections/women",
-      children: [
-        { label: "Tops & T-Shirts", href: "/collections/women/tops" },
-        { label: "Shirts & Blouses", href: "/collections/women/shirts" },
-        { label: "Jeans & Trousers", href: "/collections/women/jeans" },
-        { label: "Dresses", href: "/collections/women/dresses" },
-        { label: "Skirts", href: "/collections/women/skirts" },
-        { label: "Hoodies & Sweatshirts", href: "/collections/women/hoodies" },
-        { label: "Jackets & Coats", href: "/collections/women/jackets" },
-        { label: "Activewear", href: "/collections/women/activewear" },
-        { label: "Occasion Wear", href: "/collections/women/occasion-wear" },
-      ],
-    },
-    {
-      label: "Collections",
-      href: "/collections",
-      children: [
-        { label: "Streetwear", href: "/collections/streetwear" },
-        { label: "Essentials", href: "/collections/essentials" },
-        { label: "After Dark", href: "/collections/after-dark" },
-        { label: "Best Sellers", href: "/collections/best-sellers" },
-        { label: "The Archive", href: "/collections/archive" },
-      ],
-    },
-    {
-      label: "Accessories",
-      href: "/collections/accessories",
-    },
-    {
-      label: "Sale",
-      href: "/collections/sale",
-    },
-  ],
+  main: MAIN_NAV_ITEMS,
   footer: {
     shop: [
       { label: "New Arrivals", href: "/collections/new-arrivals" },

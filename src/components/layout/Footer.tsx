@@ -14,13 +14,34 @@ import { BRAND, NAV_LINKS } from "@/lib/constants";
 
 export function Footer() {
   const [email, setEmail] = useState("");
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const currentYear = new Date().getFullYear();
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Connect to newsletter API
-    alert(`Thank you for subscribing with ${email}`);
-    setEmail("");
+    if (!email) return;
+
+    try {
+      setIsSubmitting(true);
+      setStatusMessage(null);
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setStatusMessage(data.message || "Thank you for joining the House of Maison Noir.");
+        setEmail("");
+      } else {
+        setStatusMessage(data.error || "Subscription error. Please try again.");
+      }
+    } catch {
+      setStatusMessage("An unexpected network interruption occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -49,13 +70,21 @@ export function Footer() {
               />
               <button
                 type="submit"
-                className="px-6 py-3.5 bg-gold text-white text-xs font-medium tracking-[0.15em] uppercase
-                  hover:bg-gold-dark transition-colors duration-300 flex items-center gap-2"
+                disabled={isSubmitting}
+                className="px-6 py-3.5 bg-gold text-noir text-xs font-semibold tracking-[0.15em] uppercase
+                  hover:bg-gold-light transition-colors duration-300 flex items-center gap-2 disabled:opacity-50"
               >
-                <span className="hidden sm:inline">Subscribe</span>
+                <span className="hidden sm:inline">
+                  {isSubmitting ? "Inscribing..." : "Subscribe"}
+                </span>
                 <ArrowRightIcon size={16} />
               </button>
             </form>
+            {statusMessage && (
+              <p className="text-xs text-gold mt-3 tracking-wide font-light">
+                {statusMessage}
+              </p>
+            )}
             <p className="text-[10px] text-white/30 mt-3 tracking-wide">
               By subscribing, you agree to our Privacy Policy.
             </p>
